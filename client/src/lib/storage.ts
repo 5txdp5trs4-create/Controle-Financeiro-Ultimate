@@ -19,13 +19,16 @@ export interface Goal {
   deadline: string;
 }
 
-export interface SalaryData {
+export interface Salary {
+  id: string;
+  name: string;
   grossSalary: number;
   mealVoucher: number;
   foodVoucher: number;
   bonus: number;
   otherBenefits: number;
   deductions: { name: string; value: number; isPercentage: boolean }[];
+  date: string;
 }
 
 export interface Investment {
@@ -35,6 +38,7 @@ export interface Investment {
   amount: number;
   returnType: 'percentage' | 'fixed';
   returnValue: number;
+  returnFrequency: RecurrenceType;
   date: string;
 }
 
@@ -48,7 +52,7 @@ export interface UserData {
 const STORAGE_KEYS = {
   transactions: 'cfu_transactions',
   goals: 'cfu_goals',
-  salary: 'cfu_salary',
+  salaries: 'cfu_salaries',
   investments: 'cfu_investments',
   user: 'cfu_user',
 };
@@ -72,13 +76,13 @@ export const storage = {
     localStorage.setItem(STORAGE_KEYS.goals, JSON.stringify(goals));
   },
   
-  getSalary: (): SalaryData | null => {
-    const data = localStorage.getItem(STORAGE_KEYS.salary);
-    return data ? JSON.parse(data) : null;
+  getSalaries: (): Salary[] => {
+    const data = localStorage.getItem(STORAGE_KEYS.salaries);
+    return data ? JSON.parse(data) : [];
   },
   
-  saveSalary: (salary: SalaryData) => {
-    localStorage.setItem(STORAGE_KEYS.salary, JSON.stringify(salary));
+  saveSalaries: (salaries: Salary[]) => {
+    localStorage.setItem(STORAGE_KEYS.salaries, JSON.stringify(salaries));
   },
   
   getInvestments: (): Investment[] => {

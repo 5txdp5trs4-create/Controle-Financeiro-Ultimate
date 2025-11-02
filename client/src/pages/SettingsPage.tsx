@@ -30,18 +30,18 @@ export default function SettingsPage({ user, onLogout }: SettingsPageProps) {
   };
 
   return (
-    <div className="p-4 pb-20 space-y-6">
-      <h2 className="text-2xl font-bold">Ajustes</h2>
+    <div className="p-4 pb-20 space-y-4 md:space-y-6 max-w-2xl mx-auto">
+      <h2 className="text-xl md:text-2xl font-bold">Ajustes</h2>
 
-      <Card className="p-6">
-        <div className="flex items-center gap-4">
+      <Card className="p-4 md:p-6">
+        <div className="flex flex-col sm:flex-row items-center sm:items-start gap-4">
           <Avatar className="w-20 h-20">
             <AvatarImage src={user.photoURL} alt={user.name} />
             <AvatarFallback className="text-2xl">
               {user.name.charAt(0).toUpperCase()}
             </AvatarFallback>
           </Avatar>
-          <div className="flex-1">
+          <div className="flex-1 text-center sm:text-left">
             <h3 className="font-semibold text-lg" data-testid="text-user-name">{user.name}</h3>
             <p className="text-sm text-muted-foreground" data-testid="text-user-email">{user.email}</p>
             <p className="text-xs text-muted-foreground mt-1">
@@ -51,7 +51,7 @@ export default function SettingsPage({ user, onLogout }: SettingsPageProps) {
         </div>
       </Card>
 
-      <Card className="p-6 space-y-4">
+      <Card className="p-4 md:p-6 space-y-4">
         <h3 className="font-semibold">Preferências</h3>
         
         <div className="flex items-center justify-between">
@@ -70,7 +70,7 @@ export default function SettingsPage({ user, onLogout }: SettingsPageProps) {
         </div>
       </Card>
 
-      <Card className="p-6 space-y-3">
+      <Card className="p-4 md:p-6 space-y-3">
         <h3 className="font-semibold mb-4">Dados</h3>
         
         <Button

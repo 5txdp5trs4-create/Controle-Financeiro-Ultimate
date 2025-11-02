@@ -6,7 +6,7 @@ import { Input } from "./ui/input";
 import { Label } from "./ui/label";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "./ui/select";
 import { formatCurrency } from "@/lib/currency";
-import type { Investment } from "@/lib/storage";
+import type { Investment, RecurrenceType } from "@/lib/storage";
 
 interface InvestmentManagerProps {
   investments: Investment[];
@@ -21,6 +21,7 @@ export default function InvestmentManager({ investments, onSave }: InvestmentMan
   const [amount, setAmount] = useState('');
   const [returnType, setReturnType] = useState<'percentage' | 'fixed'>('percentage');
   const [returnValue, setReturnValue] = useState('');
+  const [returnFrequency, setReturnFrequency] = useState<RecurrenceType>('monthly');
   const [date, setDate] = useState(new Date().toISOString().split('T')[0]);
 
   const resetForm = () => {
@@ -28,6 +29,7 @@ export default function InvestmentManager({ investments, onSave }: InvestmentMan
     setType('');
     setAmount('');
     setReturnValue('');
+    setReturnFrequency('monthly');
     setDate(new Date().toISOString().split('T')[0]);
     setEditingId(null);
     setShowForm(false);
@@ -41,6 +43,7 @@ export default function InvestmentManager({ investments, onSave }: InvestmentMan
       amount: parseFloat(amount),
       returnType,
       returnValue: parseFloat(returnValue),
+      returnFrequency,
       date,
     };
 
@@ -58,6 +61,7 @@ export default function InvestmentManager({ investments, onSave }: InvestmentMan
     setAmount(investment.amount.toString());
     setReturnType(investment.returnType);
     setReturnValue(investment.returnValue.toString());
+    setReturnFrequency(investment.returnFrequency);
     setDate(investment.date);
     setEditingId(investment.id);
     setShowForm(true);
@@ -74,8 +78,21 @@ export default function InvestmentManager({ investments, onSave }: InvestmentMan
     return inv.returnValue;
   };
 
+  const getFrequencyLabel = (frequency: RecurrenceType): string => {
+    const labels: Record<RecurrenceType, string> = {
+      'none': '',
+      'daily': 'Diário',
+      'weekly': 'Semanal',
+      'biweekly': 'Quinzenal',
+      'monthly': 'Mensal',
+      'semiannual': 'Semestral',
+      'annual': 'Anual',
+    };
+    return labels[frequency];
+  };
+
   return (
-    <Card className="p-6" data-testid="card-investment-manager">
+    <Card className="p-4 md:p-6" data-testid="card-investment-manager">
       <div className="flex items-center justify-between mb-4">
         <h3 className="text-lg font-semibold">Investimentos</h3>
         <Button size="sm" onClick={() => setShowForm(!showForm)} data-testid="button-toggle-investment-form">
@@ -150,6 +167,23 @@ export default function InvestmentManager({ investments, onSave }: InvestmentMan
           </div>
 
           <div>
+            <Label htmlFor="inv-frequency">Frequência de Rendimento</Label>
+            <Select value={returnFrequency} onValueChange={(v: RecurrenceType) => setReturnFrequency(v)}>
+              <SelectTrigger id="inv-frequency" data-testid="select-return-frequency">
+                <SelectValue />
+              </SelectTrigger>
+              <SelectContent>
+                <SelectItem value="daily">Diariamente</SelectItem>
+                <SelectItem value="weekly">Semanalmente</SelectItem>
+                <SelectItem value="biweekly">Quinzenalmente</SelectItem>
+                <SelectItem value="monthly">Mensalmente</SelectItem>
+                <SelectItem value="semiannual">Semestralmente</SelectItem>
+                <SelectItem value="annual">Anualmente</SelectItem>
+              </SelectContent>
+            </Select>
+          </div>
+
+          <div>
             <Label htmlFor="inv-date">Data do Aporte</Label>
             <Input
               id="inv-date"
@@ -185,14 +219,16 @@ export default function InvestmentManager({ investments, onSave }: InvestmentMan
                 className="flex items-center justify-between p-3 rounded-lg border hover-elevate group"
                 data-testid={`investment-${inv.id}`}
               >
-                <div className="flex-1">
+                <div className="flex-1 min-w-0">
                   <div className="flex items-center gap-2">
-                    <p className="font-medium">{inv.name}</p>
-                    <span className="text-xs text-muted-foreground">• {inv.type}</span>
+                    <p className="font-medium truncate">{inv.name}</p>
+                    <span className="text-xs text-muted-foreground hidden sm:inline">• {inv.type}</span>
                   </div>
-                  <p className="text-sm text-muted-foreground">
-                    {formatCurrency(inv.amount)} • Rendimento mensal: {formatCurrency(monthlyReturn)}
-                  </p>
+                  <div className="flex flex-col sm:flex-row sm:items-center gap-1 text-sm text-muted-foreground">
+                    <span>{formatCurrency(inv.amount)}</span>
+                    <span className="hidden sm:inline">•</span>
+                    <span>Rendimento {getFrequencyLabel(inv.returnFrequency).toLowerCase()}: {formatCurrency(monthlyReturn)}</span>
+                  </div>
                 </div>
                 <div className="flex gap-1 opacity-0 group-hover:opacity-100 transition-opacity">
                   <Button

@@ -78,36 +78,36 @@ export default function DashboardPage() {
     <div className="pb-20">
       <MonthSelector selectedMonth={selectedMonth} onMonthChange={setSelectedMonth} />
       
-      <div className="p-4 space-y-6">
-        <div className="grid grid-cols-2 gap-3">
+      <div className="p-4 space-y-4 md:space-y-6">
+        <div className="grid grid-cols-2 gap-3 md:grid-cols-4">
           <SummaryCard icon={Wallet} label="Saldo Total" value={balance} trend={12.5} />
           <SummaryCard icon={TrendingUp} label="Receitas" value={totalIncome} iconColor="bg-chart-2/10 text-chart-2" />
           <SummaryCard icon={TrendingDown} label="Despesas" value={totalExpense} iconColor="bg-destructive/10 text-destructive" />
           <SummaryCard icon={DollarSign} label="Saldo do Mês" value={balance} />
         </div>
 
-        <div className="grid gap-4">
-          <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-4">Evolução Mensal</h3>
+        <div className="grid gap-4 md:grid-cols-2">
+          <Card className="p-4 md:p-6">
+            <h3 className="text-base md:text-lg font-semibold mb-4">Evolução Mensal</h3>
             <BarChart data={monthlyData} />
           </Card>
 
-          <Card className="p-6">
-            <h3 className="text-lg font-semibold mb-4">Distribuição por Categoria</h3>
+          <Card className="p-4 md:p-6">
+            <h3 className="text-base md:text-lg font-semibold mb-4">Distribuição por Categoria</h3>
             <PieChart data={categoryData} size={220} />
           </Card>
         </div>
 
         <div className="space-y-4">
-          <div className="flex items-center justify-between">
-            <h3 className="text-lg font-semibold">Transações Recentes</h3>
-            <Button onClick={() => setShowTransactionModal(true)} data-testid="button-add-transaction">
+          <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-3">
+            <h3 className="text-base md:text-lg font-semibold">Transações Recentes</h3>
+            <Button onClick={() => setShowTransactionModal(true)} data-testid="button-add-transaction" className="w-full sm:w-auto">
               <Plus className="w-4 h-4 mr-1" />
               Nova
             </Button>
           </div>
 
-          <div className="flex gap-2">
+          <div className="flex flex-col sm:flex-row gap-2">
             <div className="flex-1 relative">
               <Search className="absolute left-3 top-1/2 transform -translate-y-1/2 w-4 h-4 text-muted-foreground" />
               <Input
@@ -119,7 +119,7 @@ export default function DashboardPage() {
               />
             </div>
             <Select value={filterType} onValueChange={(v: any) => setFilterType(v)}>
-              <SelectTrigger className="w-32" data-testid="select-filter-type">
+              <SelectTrigger className="w-full sm:w-32" data-testid="select-filter-type">
                 <SelectValue />
               </SelectTrigger>
               <SelectContent>
