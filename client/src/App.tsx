@@ -1,30 +1,85 @@
-import { Switch, Route } from "wouter";
-import { queryClient } from "./lib/queryClient";
+import { useState, useEffect } from "react";
 import { QueryClientProvider } from "@tanstack/react-query";
+import { queryClient } from "./lib/queryClient";
 import { Toaster } from "@/components/ui/toaster";
 import { TooltipProvider } from "@/components/ui/tooltip";
-import NotFound from "@/pages/not-found";
+import { ThemeProvider } from "@/lib/theme";
+import { storage, type UserData } from "@/lib/storage";
+import SplashScreen from "@/components/SplashScreen";
+import LoginPage from "@/components/LoginPage";
+import BottomNav from "@/components/BottomNav";
+import DashboardPage from "@/pages/DashboardPage";
+import PlanningPage from "@/pages/PlanningPage";
+import SettingsPage from "@/pages/SettingsPage";
 
-function Router() {
-  return (
-    <Switch>
-      {/* Add pages below */}
-      {/* <Route path="/" component={Home}/> */}
-      {/* Fallback to 404 */}
-      <Route component={NotFound} />
-    </Switch>
-  );
-}
+type Tab = 'inicio' | 'historico' | 'estatisticas' | 'planejamentos' | 'ajustes';
 
-function App() {
+export default function App() {
+  const [showSplash, setShowSplash] = useState(true);
+  const [user, setUser] = useState<UserData | null>(null);
+  const [activeTab, setActiveTab] = useState<Tab>('inicio');
+
+  useEffect(() => {
+    const savedUser = storage.getUser();
+    if (savedUser) {
+      setUser(savedUser);
+    }
+  }, []);
+
+  const handleLogin = (userData: UserData) => {
+    storage.saveUser(userData);
+    setUser(userData);
+  };
+
+  const handleLogout = () => {
+    storage.clearUser();
+    setUser(null);
+    setActiveTab('inicio');
+  };
+
+  if (showSplash) {
+    return <SplashScreen onComplete={() => setShowSplash(false)} />;
+  }
+
+  if (!user) {
+    return (
+      <QueryClientProvider client={queryClient}>
+        <ThemeProvider>
+          <TooltipProvider>
+            <LoginPage onLogin={handleLogin} />
+            <Toaster />
+          </TooltipProvider>
+        </ThemeProvider>
+      </QueryClientProvider>
+    );
+  }
+
   return (
     <QueryClientProvider client={queryClient}>
-      <TooltipProvider>
-        <Toaster />
-        <Router />
-      </TooltipProvider>
+      <ThemeProvider>
+        <TooltipProvider>
+          <div className="min-h-screen bg-background">
+            {activeTab === 'inicio' && <DashboardPage />}
+            {activeTab === 'historico' && (
+              <div className="p-4 pb-20">
+                <h2 className="text-2xl font-bold mb-4">Histórico Completo</h2>
+                <p className="text-muted-foreground">Em desenvolvimento...</p>
+              </div>
+            )}
+            {activeTab === 'estatisticas' && (
+              <div className="p-4 pb-20">
+                <h2 className="text-2xl font-bold mb-4">Estatísticas</h2>
+                <p className="text-muted-foreground">Em desenvolvimento...</p>
+              </div>
+            )}
+            {activeTab === 'planejamentos' && <PlanningPage />}
+            {activeTab === 'ajustes' && <SettingsPage user={user} onLogout={handleLogout} />}
+            
+            <BottomNav activeTab={activeTab} onTabChange={setActiveTab} />
+          </div>
+          <Toaster />
+        </TooltipProvider>
+      </ThemeProvider>
     </QueryClientProvider>
   );
 }
-
-export default App;
