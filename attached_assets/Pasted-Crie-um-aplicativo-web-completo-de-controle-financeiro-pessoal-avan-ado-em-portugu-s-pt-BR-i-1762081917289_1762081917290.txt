@@ -1,0 +1,98 @@
+Crie um aplicativo web completo de **controle financeiro pessoal avançado**, em português (pt-BR), inspirado no Mobills, utilizando **HTML, CSS e JavaScript.  
+O app deve ter design moderno, responsivo, tema escuro padrão, autenticação real com Google e funcionamento offline (via localStorage).
+
+---
+
+### 🧭 ESTRUTURA DE ABAS
+
+**1. Aba “Início”**
+- Exibir resumo geral: saldo total, receitas, despesas e saldo do mês corrente.
+- Mostrar gráficos em `<canvas>`:
+  - **Gráfico de barras** com evolução mensal.
+  - **Gráfico de pizza** com distribuição por categoria.
+- Listagem de transações recentes com filtros por tipo (receita/despesa), categoria e busca.
+- Botão para adicionar nova transação (somente nessa aba) (entrada ou saída).
+- Em cada transação individual adicionada, ter um botão pra editar e outro pra excluir, ambos com icone de lapis e o outro de lixeira.
+- Na transação a ser adicionada, permitir opção de recorrência para: diariamente, semanalmente, a cada 15 dias, mensalmente, a cada 6 meses e todos os anos.
+- Ao editar ou excluir uma transação recorrente, perguntar se quer excluir somente essa ou todas as transações futuras.
+
+---
+
+**2. Aba “Histórico Completo”**
+- Listar todas as transações com data, descrição, categoria, tipo e valor.
+- Permitir editar e excluir transações.
+- Filtros por período (data inicial e final).
+- Exibir totais filtrados.
+
+---
+
+**3. Aba “Estatísticas”**
+- Exibir métricas e relatórios:
+  - Média mensal dos últimos 6 meses.
+  - Maior despesa e maior receita.
+  - Gráfico de linha com evolução do saldo.
+  - Ranking das categorias com maiores gastos.
+- Todos os gráficos devem ser feitos em `<canvas>`.
+
+---
+
+**4. Aba “Planejamentos e Metas”**
+- Criar e gerenciar metas financeiras (ex: “Juntar R$5.000 até dezembro”).
+- Exibir progresso em barras de porcentagem.
+- **Seção de salário e benefícios:**
+  - Campo de **salário bruto (R$)**.
+  - Campos opcionais para **vale-refeição**, **vale-alimentação**, **bônus** e **outros benefícios** (valores individuais).
+  - Campo de **descontos** com opção de valor ou porcentagem (INSS, IRRF, plano de saúde, etc.).
+  - Calcular automaticamente o **salário líquido** (bruto - descontos).
+  - O salário líquido + benefícios deve ser adicionado ao **planejamento mensal como receita fixa**.
+
+- **Aba “Investimentos”:**
+  - Registrar aportes com valor, data e descrição.
+  - Escolher o tipo de rendimento: **percentual (%)** ou **valor fixo (R$)**.
+  - O sistema deve calcular automaticamente o rendimento estimado e adicionar o ganho como **entrada de receita mensal**.
+  - Permitir editar aportes e rendimentos depois.
+- Exibir gráfico de barras de ganhos e perdas, e outro grafico de pizza com os tipos de investimentos como em uma carteira de investimentos (visualização geral e não mensal)
+
+---
+
+**5. Aba “Ajustes”**
+- Implementar **login com Google**, utilizando o **Google Identity Services (OAuth 2.0)**:
+  - O usuário deve poder entrar com sua conta Google real.
+- Implementar login por email e senha com opção de criar uma conta.
+  - Após o login, exibir o nome, foto e e-mail do usuário logado.
+  - Permitir logout.
+- O botão de **alternar tema escuro/claro (ícone de sol e lua)** deve aparecer **somente nesta aba**.
+  - O tema escuro é o padrão inicial.
+  - A preferência deve ser salva no `localStorage`.
+- Botão de **exportar o histórico completo em Excel (.xlsx ou .csv)**.
+- Botão de **limpar todos os dados** (reset do `localStorage`).
+- Exibir as informações de login e configuração de forma organizada.
+
+---
+
+### ⚙️ FUNCIONALIDADES GERAIS
+- Armazenar dados localmente via `localStorage`.
+- Funcionar 100% offline, exceto a autenticação Google.
+- Interface moderna, limpa e responsiva (tema escuro e claro).
+- Menu de barra inferior com ícones para cada aba.
+- Visualizar e selecionar os meses com setas laterais em uma barra superior no app desde janeiro de 2025, e deve ser visualizado somente nas abas início, histórico completo e estatísticas.
+- Transições suaves entre abas e ao alternar o tema.
+- Todos os textos e rótulos devem estar em português (pt-BR).
+- Nome oficial do app: **Controle Financeiro Ultimate**.
+- Adicionar pequenas animações de entrada e transição entre abas.
+- Exibir **créditos fixos no rodapé** somente na aba de configurações com o seguinte texto:
+© 2025 - Todos os direitos reservados
+Desenvolvido por Jonatan Tonussi
+Suporte: jonatan_spy@hotmail.com
+
+---
+
+### REQUISITOS DE IMPLEMENTAÇÃO
+- Todo o código deve estar contido em um único arquivo `.html`, com CSS e JS integrados e bem comentados.
+- O login com Google deve usar **Google Identity Services** (não apenas uma simulação).
+- O app deve continuar funcionando normalmente off-line após o login.
+- O tema escuro deve ser o padrão, mas alternável.
+- Todos os gráficos devem ser criados com `<canvas>` e JavaScript nativo.
+---
+
+(Opcional: exibir animação simples com o nome "Controle Financeiro Ultimate" no carregamento inicial do app.)
