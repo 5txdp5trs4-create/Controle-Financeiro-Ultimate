@@ -9,6 +9,8 @@ import SplashScreen from "@/components/SplashScreen";
 import LoginPage from "@/components/LoginPage";
 import BottomNav from "@/components/BottomNav";
 import DashboardPage from "@/pages/DashboardPage";
+import HistoryPage from "@/pages/HistoryPage";
+import StatisticsPage from "@/pages/StatisticsPage";
 import PlanningPage from "@/pages/PlanningPage";
 import SettingsPage from "@/pages/SettingsPage";
 
@@ -60,18 +62,8 @@ export default function App() {
         <TooltipProvider>
           <div className="min-h-screen bg-background">
             {activeTab === 'inicio' && <DashboardPage />}
-            {activeTab === 'historico' && (
-              <div className="p-4 pb-20">
-                <h2 className="text-2xl font-bold mb-4">Histórico Completo</h2>
-                <p className="text-muted-foreground">Em desenvolvimento...</p>
-              </div>
-            )}
-            {activeTab === 'estatisticas' && (
-              <div className="p-4 pb-20">
-                <h2 className="text-2xl font-bold mb-4">Estatísticas</h2>
-                <p className="text-muted-foreground">Em desenvolvimento...</p>
-              </div>
-            )}
+            {activeTab === 'historico' && <HistoryPage />}
+            {activeTab === 'estatisticas' && <StatisticsPage />}
             {activeTab === 'planejamentos' && <PlanningPage />}
             {activeTab === 'ajustes' && <SettingsPage user={user} onLogout={handleLogout} />}
             
